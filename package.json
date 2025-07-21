@@ -4,11 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-  "start": "concurrently \"npm run server\" \"npm run frontend\" \"wait-on http://localhost:3000 && electron .\"",
-  "server": "node server/index.js",
-  "frontend": "cd frontend && npm start"
-}
-,
+    "start": "concurrently \"npm run server\" \"npm run frontend\" \"wait-on http://localhost:3000 && electron .\"",
+    "server": "node server/index.js",
+    "frontend": "cd frontend && npm start"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -17,5 +16,8 @@
     "concurrently": "^8.2.2",
     "electron": "^37.2.3",
     "wait-on": "^8.0.3"
+  },
+  "dependencies": {
+    "lucide-react": "^0.525.0"
   }
 }
