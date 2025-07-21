@@ -1,0 +1,21 @@
+{
+  "name": "smartpos",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+  "start": "concurrently \"npm run server\" \"npm run client\" \"wait-on http://localhost:3000 && electron .\"",
+  "server": "node server/index.js",
+  "client": "cd client && npm start"
+}
+,
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "electron": "^37.2.3",
+    "wait-on": "^8.0.3"
+  }
+}
