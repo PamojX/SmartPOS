@@ -2,8 +2,8 @@
 
 import { useState } from "react"
 import Sidebar from './components/Sidebar/Sidebar'
-import Dashboard from './components/Dashboard/Dashboard'
-import NewBill from './components/Newbill/Newbill'
+import Dashboard from './pages/Dashboard/Dashboard'
+import NewBill from './pages/Newbill/Newbill'
 import './App.css'
 
 export default function Home() {
