@@ -1,13 +1,16 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const sqlite3 = require("sqlite3").verbose();
-const path = require("path");
 
-const dbPath = path.resolve(__dirname, "../db/database.sqlite");
-const db = new sqlite3.Database(dbPath);
+const { db } = require('../db/init');  // import shared db
 
-router.get("/", (req, res) => {
-  db.all("SELECT * FROM items", [], (err, rows) => {
+router.get('/', (req, res) => {
+  const sql = `
+    SELECT id, name, price, 'service' AS type FROM services
+    UNION ALL
+    SELECT id, name, price, 'product' AS type FROM products
+  `;
+
+  db.all(sql, [], (err, rows) => {
     if (err) return res.status(500).json({ error: err.message });
     res.json(rows);
   });
