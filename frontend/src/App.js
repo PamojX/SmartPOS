@@ -4,6 +4,7 @@ import { useState } from "react"
 import Sidebar from './components/Sidebar/Sidebar'
 import Dashboard from './pages/Dashboard/Dashboard'
 import NewBill from './pages/Newbill/Newbill'
+import JobOrders from './pages/JobOrders/JobOrders'
 import './App.css'
 
 export default function Home() {
@@ -21,11 +22,7 @@ export default function Home() {
       case "NewBill":
         return <NewBill />
       case "JobOrders":
-        return (
-          <div className="content-placeholder">
-            <h1>Job Orders Page</h1>
-          </div>
-        )
+        return <JobOrders/>
       case "Inventory":
         return (
           <div className="content-placeholder">
