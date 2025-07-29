@@ -5,6 +5,7 @@ const path = require("path");
 
 const dbPath = path.resolve(__dirname, "../../pos.db");
 const db = new sqlite3.Database(dbPath);
+db.serialize();
 
 router.post("/", async (req, res) => {
   const { customerName, billDate, total, items } = req.body;
@@ -55,9 +56,11 @@ router.post("/", async (req, res) => {
     }
 
     // Insert transaction
+    const transactionType = items[0].type;
+
     const insertTransaction = await runAsync(
-      "INSERT INTO transactions (customer_name, date, total) VALUES (?, ?, ?)",
-      [customerName, billDate, total]
+      "INSERT INTO transactions (customer_name, date, total , type) VALUES (?, ?, ?, ?)",
+      [customerName, billDate, total , transactionType]
     );
 
     const transactionId = insertTransaction.lastID;
@@ -65,10 +68,10 @@ router.post("/", async (req, res) => {
     // Insert transaction items & update stock
     for (const item of items) {
       await runAsync(
-        "INSERT INTO transaction_items (transaction_id, item_id, quantity, price) VALUES (?, ?, ?, ?)",
-        [transactionId, item.id, item.qty, item.price]
+        "INSERT INTO transaction_items (transaction_id, item_id, name, quantity, price) VALUES (?, ?, ?, ?, ?)",
+        [transactionId, item.id, item.name, item.qty, item.price]
       );
-
+      
       if (item.type === "product") {
         await runAsync(
           "UPDATE products SET stock = stock - ? WHERE id = ?",
