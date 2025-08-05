@@ -1,82 +1,212 @@
-import { BarChart3 } from "lucide-react"
-import "./JobOrders.css" // Import the CSS file
+"use client"
+import { useState, useEffect } from "react"
+import { Plus, CheckCircle } from "lucide-react"
+import "./JobOrders.css"
 
-const jobOrders = [
-  {
-    orderId: "#A1032",
-    customer: "Lahiru",
-    jobType: "A3 Color Poster",
-    qty: 10,
-    dueDate: "21-Jul",
-    status: "Pending",
-  },
-  {
-    orderId: "#A1033",
-    customer: "Nadeesha",
-    jobType: "Laminated ID Cards",
-    qty: 25,
-    dueDate: "25-Jul",
-    status: "Ready",
-  },
-  // Add more empty rows for demonstration
-  { orderId: "", customer: "", jobType: "", qty: null, dueDate: "", status: "" },
-  { orderId: "", customer: "", jobType: "", qty: null, dueDate: "", status: "" },
-  { orderId: "", customer: "", jobType: "", qty: null, dueDate: "", status: "" },
-  { orderId: "", customer: "", jobType: "", qty: null, dueDate: "", status: "" },
-  { orderId: "", customer: "", jobType: "", qty: null, dueDate: "", status: "" },
-]
+const JobOrders = () => {
+  const [jobList, setJobList] = useState([])
+  const [availableJobs, setAvailableJobs] = useState([])
 
-export default function JobOrders() {
+  useEffect(() => {
+    fetchAvailableJobs()
+    addJob() // start with one job row
+  }, [])
+
+  const fetchAvailableJobs = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/api/items")
+      if (res.ok) {
+        const jobs = await res.json()
+        setAvailableJobs(jobs)
+      } else {
+        console.error("Failed to fetch job types.")
+      }
+    } catch (err) {
+      console.error("Error loading job types:", err)
+    }
+  }
+
+  const addJob = () => {
+    const newJob = {
+      id: Date.now(),
+      customerName: "",
+      jobType: "",
+      jobTypeId: null,
+      quantity: 1,
+      pricePerUnit: 0,
+      totalPrice: 0,
+      dueDate: new Date().toISOString().split("T")[0],
+      itemType: null,
+    }
+    setJobList((prev) => [...prev, newJob])
+  }
+
+  const deleteJob = (id) => {
+    setJobList((prev) => prev.filter((job) => job.id !== id))
+  }
+
+
+  const updateJob = (id, field, value) => {
+    setJobList((prev) =>
+      prev.map((job) => {
+        if (job.id !== id) return job
+
+        const updatedJob = { ...job, [field]: value }
+
+        if (field === "jobType") {
+          const selected = availableJobs.find((j) => j.name === value)
+          if (selected) {
+            updatedJob.pricePerUnit = selected.price
+            updatedJob.jobTypeId = selected.id
+            updatedJob.itemType = selected.type
+          }
+        }
+
+        if (field === "quantity" || field === "jobType") {
+          updatedJob.totalPrice = (updatedJob.quantity || 0) * (updatedJob.pricePerUnit || 0)
+        }
+
+        return updatedJob
+      })
+    )
+  }
+
+  const handleJobComplete = async (job) => {
+  if (!job.customerName || !job.jobType || job.quantity <= 0 || !job.dueDate) {
+    alert("Please complete all required fields.")
+    return
+  }
+
+  const transaction = {
+    customerName: job.customerName,
+    billDate: job.dueDate, // backend expects this field
+    total: job.totalPrice,
+    items: [
+      {
+        id: job.jobTypeId,
+        name: job.jobType,
+        qty: job.quantity,
+        price: job.pricePerUnit,
+        type: job.itemType,
+      },
+    ],
+  }
+
+  try {
+    const res = await fetch("http://localhost:5000/api/transactions", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(transaction),
+    })
+
+    let result;
+    try {
+      result = await res.json()
+    } catch (e) {
+      const text = await res.text()
+      console.error("Non-JSON response from server:", text)
+      alert("❌ Server returned invalid response.")
+      return
+    }
+
+    if (res.ok) {
+      alert(`✅ Job completed! ID: ${result.transactionId || "N/A"}`)
+      setJobList((prev) => prev.filter((j) => j.id !== job.id))
+    } else {
+      alert("❌ Error: " + (result.error || "Unknown Error"))
+    }
+  } catch (err) {
+    console.error("Job submission failed:", err)
+    alert("❌ Failed to complete job.")
+  }
+}
+
   return (
     <div className="job-orders-container">
-      <div className="job-orders-card">
-        <div className="job-orders-header">
-          <div className="job-orders-company-info">
-            <div className="job-orders-company-name">Asian Printers - Galle</div>
-          </div>
-          <div className="job-orders-user-info">
-            <span className="job-orders-user-role">Operator</span>
-            <span className="job-orders-user-name">Nuwan</span>
-          </div>
-        </div>
-        <div className="job-orders-content">
-          <h2 className="job-orders-title">Job Orders</h2>
-          <div className="job-orders-table-wrapper">
-            <table className="job-orders-table">
-              <thead>
-                <tr>
-                  <th className="job-orders-table-head">Order ID</th>
-                  <th className="job-orders-table-head">Customer</th>
-                  <th className="job-orders-table-head">Job Type</th>
-                  <th className="job-orders-table-head">Qty</th>
-                  <th className="job-orders-table-head">Due Date</th>
-                </tr>
-              </thead>
-              <tbody>
-                {jobOrders.map((order, index) => (
-                  <tr key={index} className="job-orders-table-row">
-                    <td className="job-orders-table-cell font-medium">{order.orderId}</td>
-                    <td className="job-orders-table-cell">{order.customer}</td>
-                    <td className="job-orders-table-cell">{order.jobType}</td>
-                    <td className="job-orders-table-cell">{order.qty}</td>
-                    <td className="job-orders-table-cell">
-                      {order.status === "Ready" ? (
-                        <span className="job-orders-ready-status">Ready</span>
-                      ) : (
-                        order.dueDate
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
+      <h2 className="job-orders-title">Job Orders</h2>
+
+      <table className="job-table">
+        <thead>
+          <tr>
+            <th>Customer Name</th>
+            <th>Job Type</th>
+            <th>Quantity</th>
+            <th>Total Price</th>
+            <th>Due Date</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {jobList.map((job) => (
+            <tr key={job.id}>
+              <td>
+                <input
+                  type="text"
+                  value={job.customerName}
+                  onChange={(e) => updateJob(job.id, "customerName", e.target.value)}
+                  placeholder="Enter customer name"
+                  className="table-input"
+                />
+              </td>
+              <td>
+                <select
+                  value={job.jobType}
+                  onChange={(e) => updateJob(job.id, "jobType", e.target.value)}
+                  className="table-input"
+                >
+                  <option value="">Select job</option>
+                  {availableJobs.map((item) => (
+                    <option key={`${item.id}-${item.type}`} value={item.name}>
+                      {item.name} - Rs.{item.price}
+                    </option>
+                  ))}
+                </select>
+              </td>
+              <td>
+                <input
+                  type="number"
+                  value={job.quantity}
+                  onChange={(e) => updateJob(job.id, "quantity", Number(e.target.value))}
+                  min="1"
+                  className="table-input"
+                />
+              </td>
+              <td>Rs. {job.totalPrice.toFixed(2)}</td>
+              <td>
+                <input
+                  type="date"
+                  value={job.dueDate}
+                  onChange={(e) => updateJob(job.id, "dueDate", e.target.value)}
+                  className="table-input"
+                />
+              </td>
+              <td>
+                <button onClick={() => handleJobComplete(job)} className="button-green">
+                  Mark as Completed
+                </button>
+
+
+                 {jobList.length > 1 && (
+                  <button onClick={() => deleteJob(job.id)} className="delete-button" style={{ marginLeft: "0.5rem" }}>
+                        🗑️
+                  <span>Delete</span>
+                  </button>
+                  )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      {/* Add Job Button */}
+      <div className="add-job-button-container">
+        <button onClick={addJob} className="add-job-button">
+          <Plus />
+          <span>Add Job</span>
+        </button>
       </div>
-      <button className="job-orders-floating-button">
-        <BarChart3 />
-        Orders
-      </button>
     </div>
   )
 }
+
+export default JobOrders
