@@ -3,71 +3,88 @@ const router = express.Router();
 const sqlite3 = require("sqlite3").verbose();
 const path = require("path");
 
-const dbPath = path.resolve(__dirname, "../db/database.sqlite");
+const dbPath = path.resolve(__dirname, "../../pos.db");
 const db = new sqlite3.Database(dbPath);
+db.serialize();
 
-router.post("/", (req, res) => {
+router.post("/", async (req, res) => {
   const { customerName, billDate, total, items } = req.body;
+   console.log("Received transaction data:", req.body);
 
   if (!customerName || !billDate || !items || !items.length) {
     return res.status(400).json({ error: "Missing required fields" });
   }
 
-  db.serialize(() => {
-    // Check stock
-    const insufficientStock = items.find((item) => {
-      if (item.type === "product") {
-        // Use synchronous get (wrapped)
-        const stmt = db.prepare("SELECT stock FROM items WHERE id = ?");
-        let stock;
-        stmt.get([item.id], (err, row) => {
-          if (row) stock = row.stock;
-        });
-        stmt.finalize();
-
-        return stock < item.qty;
-      }
-      return false;
-    });
-
-    if (insufficientStock) {
-      return res.status(400).json({
-        error: `Insufficient stock for ${insufficientStock.name}`,
+  // Helper to run SQL with Promise
+  function getAsync(sql, params) {
+    return new Promise((resolve, reject) => {
+      db.get(sql, params, (err, row) => {
+        if (err) reject(err);
+        else resolve(row);
       });
+    });
+  }
+
+  function runAsync(sql, params) {
+    return new Promise((resolve, reject) => {
+      db.run(sql, params, function (err) {
+        if (err) reject(err);
+        else resolve(this);
+      });
+    });
+  }
+
+  try {
+    // Check stock for each product item
+    for (const item of items) {
+      if (item.type === "product") {
+        const row = await getAsync(
+          "SELECT stock FROM products WHERE id = ?",
+          [item.id]
+        );
+
+        if (!row) {
+          return res.status(400).json({ error: `Product ID ${item.id} not found` });
+        }
+
+        if (row.stock < item.qty) {
+          return res.status(400).json({
+            error: `Insufficient stock for ${item.name}. Available: ${row.stock}`,
+          });
+        }
+      }
     }
 
     // Insert transaction
-    db.run(
-      "INSERT INTO transactions (customer_name, bill_date, total_amount) VALUES (?, ?, ?)",
-      [customerName, billDate, total],
-      function (err) {
-        if (err) return res.status(500).json({ error: err.message });
+    const transactionType = items[0].type;
 
-        const transactionId = this.lastID;
-
-        // Insert transaction items
-        const insertStmt = db.prepare(
-          "INSERT INTO transaction_items (transaction_id, item_id, quantity, price) VALUES (?, ?, ?, ?)"
-        );
-
-        items.forEach((item) => {
-          insertStmt.run(transactionId, item.id, item.qty, item.price);
-
-          // Deduct stock if product
-          if (item.type === "product") {
-            db.run("UPDATE items SET stock = stock - ? WHERE id = ?", [
-              item.qty,
-              item.id,
-            ]);
-          }
-        });
-
-        insertStmt.finalize();
-
-        return res.status(201).json({ transactionId });
-      }
+    const insertTransaction = await runAsync(
+      "INSERT INTO transactions (customer_name, date, total , type) VALUES (?, ?, ?, ?)",
+      [customerName, billDate, total , transactionType]
     );
-  });
+
+    const transactionId = insertTransaction.lastID;
+
+    // Insert transaction items & update stock
+    for (const item of items) {
+      await runAsync(
+        "INSERT INTO transaction_items (transaction_id, item_id, name, quantity, price) VALUES (?, ?, ?, ?, ?)",
+        [transactionId, item.id, item.name, item.qty, item.price]
+      );
+      
+      if (item.type === "product") {
+        await runAsync(
+          "UPDATE products SET stock = stock - ? WHERE id = ?",
+          [item.qty, item.id]
+        );
+      }
+    }
+
+    res.status(201).json({ transactionId });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 });
 
 module.exports = router;

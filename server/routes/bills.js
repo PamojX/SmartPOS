@@ -3,7 +3,7 @@ const router = express.Router();
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 
-const dbPath = path.resolve(__dirname, '../db/database.sqlite');
+const dbPath = path.resolve(__dirname, '../../pos.db');
 const db = new sqlite3.Database(dbPath);
 
 // POST /api/bills - Create a new bill

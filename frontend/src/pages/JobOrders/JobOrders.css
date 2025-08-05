@@ -1,0 +1,211 @@
+/* Base container for the entire UI */
+.job-orders-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px;
+  width: 100%;
+  background-color: #f8f9fa; /* Light background for the page */
+  min-height: 100vh;
+  position: relative; /* For positioning the floating button */
+  font-family: sans-serif; /* A common sans-serif font */
+}
+
+/* Card-like container styling */
+.job-orders-card {
+  width: 100%;
+  max-width: 800px;
+  border-radius: 12px; /* Rounded corners */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* Subtle shadow */
+  background-color: #ffffff; /* White background for the card */
+  overflow: hidden; /* Ensures rounded corners apply to children */
+  border: 1px solid #e2e8f0; /* Light border */
+}
+
+/* Header styling */
+.job-orders-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  border-bottom: 1px solid #e2e8f0; /* Light border at the bottom */
+  background-color: #f8f9fa; /* Slightly different background for header */
+}
+
+.job-orders-company-name {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333333;
+}
+
+.job-orders-user-info {
+  display: flex;
+  gap: 8px;
+  font-size: 14px;
+  color: #666666;
+}
+
+.job-orders-user-role {
+  font-weight: 400;
+}
+
+.job-orders-user-name {
+  font-weight: 500;
+}
+
+/* Content area styling */
+.job-orders-content {
+  padding: 24px;
+}
+
+.job-orders-title {
+  font-size: 30px; /* text-3xl */
+  font-weight: 700; /* font-bold */
+  margin-bottom: 24px;
+  color: #1a202c; /* Darker text color */
+}
+
+/* Table styling */
+.job-orders-table-wrapper {
+  border: 1px solid #e2e8f0; /* Border around the table */
+  border-radius: 8px; /* Rounded corners for the table wrapper */
+  overflow: hidden; /* Ensures rounded corners apply */
+}
+
+.job-orders-table {
+  width: 100%;
+  border-collapse: collapse; /* Remove space between cells */
+}
+
+.job-orders-table th {
+  font-weight: 600; /* Semi-bold for table headers */
+  color: #4a5568; /* Darker text for headers */
+  padding: 12px 16px;
+  background-color: #f8f9fa; /* Light background for table header row */
+  text-align: left; /* Align text to left */
+}
+
+.job-orders-table tr {
+  border-bottom: 1px solid #e2e8f0; /* Separator between rows */
+}
+
+.job-orders-table tr:last-child {
+  border-bottom: none; /* No border for the last row */
+}
+
+.job-orders-table td {
+  padding: 12px 16px;
+  color: #4a5568; /* Default text color for cells */
+}
+
+.job-orders-table td.font-medium {
+  font-weight: 500;
+}
+
+/* Ready status styling */
+.job-orders-ready-status {
+  background-color: #22c55e; /* Green background */
+  color: #ffffff; /* White text */
+  padding: 4px 12px;
+  border-radius: 9999px; /* Fully rounded */
+  font-size: 12px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 24px; /* Fixed height for consistency */
+}
+
+/* Floating button styling */
+.job-orders-floating-button {
+  position: absolute;
+  bottom: 32px;
+  right: 32px;
+  background-color: #36454f; /* Dark charcoal color */
+  color: #ffffff;
+  padding: 12px 24px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none; /* Remove default button border */
+  transition: background-color 0.2s ease-in-out;
+}
+
+.job-orders-floating-button:hover {
+  background-color: #2c373f; /* Slightly darker on hover */
+}
+
+/* Icon styling within button */
+.job-orders-floating-button svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .job-orders-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .job-orders-user-info {
+    margin-top: 8px;
+  }
+
+  .job-orders-title {
+    font-size: 24px;
+  }
+
+  .job-orders-table th,
+  .job-orders-table td {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+
+  .job-orders-floating-button {
+    bottom: 16px;
+    right: 16px;
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .job-orders-container {
+    padding: 16px;
+  }
+
+  .job-orders-card {
+    border-radius: 8px;
+  }
+
+  .job-orders-header {
+    padding: 12px 16px;
+  }
+
+  .job-orders-content {
+    padding: 16px;
+  }
+
+  .job-orders-title {
+    font-size: 20px;
+    margin-bottom: 16px;
+  }
+
+  .job-orders-table-wrapper {
+    border-radius: 4px;
+  }
+
+  .job-orders-floating-button {
+    bottom: 12px;
+    right: 12px;
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+}

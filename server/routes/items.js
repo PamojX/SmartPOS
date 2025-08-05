@@ -15,13 +15,19 @@
 
 // module.exports = router;
 
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const db = require("../db/init");
 
-// Get all products
-router.get("/", (req, res) => {
-  db.all("SELECT * FROM products", [], (err, rows) => {
+const { db } = require('../db/init');  // import shared db
+
+router.get('/', (req, res) => {
+  const sql = `
+    SELECT id, name, price, 'service' AS type FROM services
+    UNION ALL
+    SELECT id, name, price, 'product' AS type FROM products
+  `;
+
+  db.all(sql, [], (err, rows) => {
     if (err) return res.status(500).json({ error: err.message });
     res.json(rows);
   });
