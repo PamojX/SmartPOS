@@ -5,9 +5,9 @@ const { db } = require('../db/init');  // import shared db
 
 router.get('/', (req, res) => {
   const sql = `
-    SELECT id, name, price, 'service' AS type FROM services
+    SELECT id, name, price, NULL as stock, 'service' AS type FROM services
     UNION ALL
-    SELECT id, name, price, 'product' AS type FROM products
+    SELECT id, name, price, stock, 'product' AS type FROM products
   `;
 
   db.all(sql, [], (err, rows) => {
