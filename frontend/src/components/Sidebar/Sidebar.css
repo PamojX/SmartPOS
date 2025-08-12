@@ -2,7 +2,7 @@
   width: 320px;
   background-color: #334155;
   color: white;
-  /*height: 100vh;*/
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
@@ -66,4 +66,5 @@
 
 .sidebar-menu-label {
   font-weight: 500;
+
 }
