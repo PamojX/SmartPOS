@@ -1,10 +1,17 @@
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '.env') }); 
 
-const express = require('express');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-const db = require('./db/init'); // Make sure this exists
+const express = require("express");
+const cors = require("cors");
+const bodyParser = require("body-parser");
+
+// const { initDB } = require("./db/init");
+const db = require("./db/init");
+// No need to call initDB(), because init logic is run automatically
+
+
+const itemRoutes = require("./routes/items");
+const transactionRoutes = require("./routes/transactions");
 const authRoutes=require("./routes/auth");
 
 const app = express();
@@ -141,6 +148,11 @@ console.log("🗑 Backend delete ID:", id);
 
 
 // ✅ Start server
+// initDB();
+
+app.use("/api/items", itemRoutes);
+app.use("/api/transactions", transactionRoutes);
+
 app.listen(PORT, () => {
-  console.log(`🟢 Server running on http://localhost:${PORT}`);
+  console.log(`Server is running on http://localhost:${PORT}`);
 });

@@ -1,0 +1,70 @@
+// const express = require("express");
+// const router = express.Router();
+// const sqlite3 = require("sqlite3").verbose();
+// const path = require("path");
+
+// const dbPath = path.resolve(__dirname, "../db/database.sqlite");
+// const db = new sqlite3.Database(dbPath);
+
+// router.get("/", (req, res) => {
+//   db.all("SELECT * FROM items", [], (err, rows) => {
+//     if (err) return res.status(500).json({ error: err.message });
+//     res.json(rows);
+//   });
+// });
+
+// module.exports = router;
+
+const express = require('express');
+const router = express.Router();
+
+const { db } = require('../db/init');  // import shared db
+
+router.get('/', (req, res) => {
+  const sql = `
+    SELECT id, name, price, 'service' AS type FROM services
+    UNION ALL
+    SELECT id, name, price, 'product' AS type FROM products
+  `;
+
+  db.all(sql, [], (err, rows) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json(rows);
+  });
+});
+
+// Add new product
+router.post("/", (req, res) => {
+  const { name, price, stock } = req.body;
+  db.run(
+    `INSERT INTO products (name, price, stock) VALUES (?, ?, ?)`,
+    [name, price, stock],
+    function (err) {
+      if (err) return res.status(500).json({ error: err.message });
+      res.status(201).json({ id: this.lastID });
+    }
+  );
+});
+
+// Update product
+router.put("/:id", (req, res) => {
+  const { name, price, stock } = req.body;
+  db.run(
+    `UPDATE products SET name = ?, price = ?, stock = ? WHERE id = ?`,
+    [name, price, stock, req.params.id],
+    function (err) {
+      if (err) return res.status(500).json({ error: err.message });
+      res.json({ updated: this.changes });
+    }
+  );
+});
+
+// Delete product
+router.delete("/:id", (req, res) => {
+  db.run(`DELETE FROM products WHERE id = ?`, [req.params.id], function (err) {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json({ deleted: this.changes });
+  });
+});
+
+module.exports = router;

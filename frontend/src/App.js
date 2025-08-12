@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import Sidebar from "./components/Sidebar/Sidebar";
-import Dashboard from "./components/Dashboard/Dashboard";
-import NewBill from "./components/Newbill/Newbill";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import NewBill from "./pages/Newbill/Newbill";
+import InventoryPage from './pages/Inventory/InventoryPage'
+import JobOrders from './pages/JobOrders/JobOrders'
 import JobOrders from "./pages/JobOrders";
 import Login from "./pages/Login";
 import Signup from "./pages/signup";
@@ -82,3 +84,4 @@ export default function App() {
     </div>
   );
 }
+
