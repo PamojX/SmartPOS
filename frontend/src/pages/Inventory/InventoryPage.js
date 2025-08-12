@@ -13,13 +13,13 @@ export default function InventoryPage() {
   }, []);
 
   const fetchProducts = async () => {
-    const res = await fetch("http://localhost:5000/api/items");
+    const res = await fetch("http://localhost:5000/api/products");
     const data = await res.json();
     setProducts(data || []);
   };
 
   const handleAdd = async () => {
-    await fetch("http://localhost:5000/api/items", {
+    await fetch("http://localhost:5000/api/products", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form),
@@ -30,7 +30,7 @@ export default function InventoryPage() {
 
   // Only called when clicking Set — this is the ONLY time we hit the DB
   const saveStock = async (id, newStock) => {
-    await fetch(`http://localhost:5000/api/items/${id}`, {
+    await fetch(`http://localhost:5000/api/products/${id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ stock: newStock }),

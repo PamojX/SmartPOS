@@ -22,13 +22,8 @@ const { db } = require('../db/init');  // import shared db
 
 router.get('/', (req, res) => {
   const sql = `
-<<<<<<< HEAD
     SELECT id, name, price, NULL as stock, 'service' AS type FROM services
     UNION ALL
-=======
-    --SELECT id, name, price, NULL as stock, 'service' AS type FROM services
-    --UNION ALL
->>>>>>> dbb4d101db9bed31d43ef54457ce81f9671aa022
     SELECT id, name, price, stock, 'product' AS type FROM products
   `;
 
