@@ -1,234 +1,185 @@
+/* Container */
 .new-bill {
-  flex: 1;
-  background-color: #f9fafb;
-  padding: 32px;
-}
-
-.new-bill-container {
-  max-width: 896px;
-  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  background-color: #f7f7f7;
+  width: 100%;
 }
 
 .new-bill-card {
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e5e7eb;
+  background: #fff;
+  padding: 20px 25px 60px 25px; /* extra bottom padding for save button */
+  border-radius: 10px;
+  width: 80%;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.08);
+  position: relative; /* for absolute button positioning */
 }
 
-.new-bill-header {
-  padding: 24px;
-  border-bottom: 1px solid #e5e7eb;
+/* Heading */
+.new-bill-card h1 {
+  text-align: center;
+  margin-bottom: 20px;
 }
 
-.new-bill-title {
-  font-size: 24px;
+/* Messages */
+.message {
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 15px;
   font-weight: bold;
-  color: #111827;
-  margin: 0;
+}
+.message.success {
+  background: #d4edda;
+  color: #155724;
+}
+.message.error {
+  background: #f8d7da;
+  color: #721c24;
 }
 
-.new-bill-content {
-  padding: 24px;
+/* Form rows */
+.form-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 10px;
+  width: 45%;
 }
 
-.customer-details-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 24px;
-  margin-bottom: 24px;
+.form-row label {
+  flex: 0 0 150px;
+  font-weight: bold;
 }
 
-@media (min-width: 768px) {
-  .customer-details-grid {
-    grid-template-columns: 1fr 1fr;
-  }
+.form-row input,
+.form-row select {
+  flex: 1;
+  padding: 6px 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
-.form-group {
+/* Table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 15px 0;
+}
+
+table th,
+table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+table th {
+  background-color: #f0f0f0;
+}
+
+/* Table inputs/selects */
+table select,
+table input {
+  width: 100%;
+  padding: 4px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Buttons */
+button {
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+/* Navy blue buttons */
+.add-item-button,
+.save-button {
+  background-color: #194b96; /* Navy blue */
+  padding: 8px 14px;
+}
+
+.add-item-button:hover,
+.save-button:hover {
+  background-color: #1563b0; /* Slightly lighter navy on hover */
+}
+
+/* Remove item button in table */
+table button {
+  background-color: #d9534f;
+}
+
+table button:hover {
+  background-color: #c9302c;
+}
+
+/* Totals section */
+.totals {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  margin-top: 20px;
+  padding: 15px 25px;
+  background-color: #f9f9fb;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 1rem;
+  color: #333;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.07);
+  min-width: 220px;
+  width: 60%;
+  margin-left: auto; /* align totals container to the right */
 }
 
-.form-label {
-  display: block;
-  font-size: 14px;
-  font-weight: 500;
-  color: #374151;
-  margin-bottom: 8px;
-}
-
-.form-input {
+.totals > div {
   width: 100%;
-  padding: 8px 12px;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  font-size: 14px;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.form-input:focus {
-  outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
-}
-
-.form-input::placeholder {
-  color: #9ca3af;
-}
-
-.bill-items-section {
-  margin-bottom: 24px;
-}
-
-.bill-items-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
+  padding: 4px 0;
 }
 
-.bill-items-title {
-  font-size: 18px;
-  font-weight: 600;
-  color: #111827;
-  margin: 0;
-}
-
-.add-item-button {
-  display: flex;
-  align-items: center;
-  padding: 8px 16px;
-  background-color: #2563eb;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: background-color 0.2s ease;
-}
-
-.add-item-button:hover {
-  background-color: #1d4ed8;
-}
-
-.add-item-icon {
-  width: 16px;
-  height: 16px;
-  margin-right: 8px;
-}
-
-.bill-table-container {
-  overflow-x: auto;
-}
-
-.bill-table {
-  width: 100%;
-  border: 1px solid #e5e7eb;
-  border-radius: 6px;
-  border-collapse: collapse;
-}
-
-.bill-table thead {
-  background-color: #f9fafb;
-}
-
-.bill-table th {
-  padding: 12px 16px;
-  text-align: left;
-  font-size: 14px;
-  font-weight: 500;
-  color: #374151;
-  border-bottom: 1px solid #e5e7eb;
-}
-
-.bill-table td {
-  padding: 12px 16px;
-  border-top: 1px solid #e5e7eb;
-}
-
-.table-input {
-  width: 100%;
-  padding: 4px 8px;
-  border: 1px solid #d1d5db;
-  border-radius: 4px;
-  font-size: 14px;
-}
-
-.table-input:focus {
-  outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.2);
-}
-
-.table-input.quantity {
+.totals input[type="number"] {
   width: 80px;
+  padding: 4px 6px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  text-align: center;
+  transition: border-color 0.3s ease;
 }
 
-.table-input.rate {
-  width: 96px;
+.totals input[type="number"]:focus {
+  outline: none;
+  border-color: #001f4d; /* navy blue */
+  box-shadow: 0 0 5px #001f4d88;
 }
 
-.amount-display {
-  font-weight: 500;
-}
-
-.delete-button {
-  color: #dc2626;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 4px;
-  border-radius: 4px;
-  transition: color 0.2s ease;
-}
-
-.delete-button:hover {
-  color: #991b1b;
-}
-
-.total-section {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 24px;
-}
-
-.total-card {
-  background-color: #f9fafb;
-  padding: 16px;
-  border-radius: 6px;
-}
-
-.total-amount {
-  font-size: 18px;
-  font-weight: 600;
-  margin: 0;
-}
-
-.actions-section {
-  display: flex;
-  justify-content: flex-end;
-}
-
+/* Save button positioned right lower corner */
 .save-button {
-  display: flex;
-  align-items: center;
-  padding: 8px 24px;
-  background-color: #059669;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: background-color 0.2s ease;
-}
+  position:absolute;
+  right: 25px;
+  bottom: 15px;
+  width: auto;
+  padding: 10px 16px;
+  /*margin-top: 650px;*/
 
-.save-button:hover {
-  background-color: #047857;
 }
-
-.save-icon {
-  width: 16px;
-  height: 16px;
-  margin-right: 8px;
+.totals input[type="number"] {
+  width: 80px;
+  padding: 4px 6px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  text-align: center;
+  transition: border-color 0.3s ease;
 }
