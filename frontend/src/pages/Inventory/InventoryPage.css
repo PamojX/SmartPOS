@@ -26,3 +26,49 @@
   padding: 8px;
   text-align: left;
 }
+
+/* --- New styles for buttons & input --- */
+.stock-input {
+  width: 60px;
+  margin: 0 6px;
+  text-align: center;
+  padding: 4px 6px;
+}
+
+.btn {
+  padding: 4px 10px;
+  border-radius: 4px;
+  border: 1px solid #d0d0d0;
+  background: #f2f2f2;
+  cursor: pointer;
+}
+
+.btn:hover { filter: brightness(0.97); }
+
+.btn-icon { min-width: 34px; }
+
+.btn-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Set button states */
+.btn-set {
+  border: none;
+  color: #fff;
+}
+
+.btn-set-idle {
+  background: #cfcfcf;   /* faded grey when no changes */
+  color: #666;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.btn-set-active {
+  background: #007bff;   /* blue when a change exists */
+  cursor: pointer;
+}
+.btn-set-active:hover {
+  filter: brightness(0.95);
+}
