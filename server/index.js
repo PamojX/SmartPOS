@@ -9,6 +9,7 @@ const db = require("./db/init");
 
 const itemRoutes = require("./routes/items");
 const transactionRoutes = require("./routes/transactions");
+const productRoutes = require("./routes/products");
 
 const app = express();
 const PORT = 5000;
@@ -20,6 +21,7 @@ app.use(bodyParser.json());
 
 app.use("/api/items", itemRoutes);
 app.use("/api/transactions", transactionRoutes);
+app.use("/api/products",productRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
