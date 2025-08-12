@@ -1,0 +1,28 @@
+.inventory-container {
+  padding: 1rem;
+  background-color: #f3f4f6;
+  flex-grow: 1;
+}
+
+.form-group {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.form-group input {
+  padding: 5px;
+}
+
+.inventory-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+}
+
+.inventory-table th,
+.inventory-table td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+}
