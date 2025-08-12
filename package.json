@@ -13,11 +13,16 @@
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
+    "autoprefixer": "^10.4.21",
     "concurrently": "^8.2.2",
     "electron": "^37.2.3",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.11",
     "wait-on": "^8.0.3"
   },
   "dependencies": {
-    "lucide-react": "^0.525.0"
+    "@tailwindcss/vite": "^4.1.11",
+    "lucide-react": "^0.525.0",
+    "react-router-dom": "^7.8.0"
   }
 }
