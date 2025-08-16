@@ -6,6 +6,7 @@ import Dashboard from './pages/Dashboard/Dashboard'
 import NewBill from './pages/Newbill/Newbill'
 import InventoryPage from './pages/Inventory/InventoryPage'
 import JobOrders from './pages/JobOrders/JobOrders'
+import Settings from './pages/Settings/Settings'
 import './App.css'
 
 export default function Home() {
@@ -40,11 +41,7 @@ export default function Home() {
           </div>
         )
       case "Settings":
-        return (
-          <div className="content-placeholder">
-            <h1>Settings Page</h1>
-          </div>
-        )
+        return <Settings />
       default:
         return <Dashboard />
     }
