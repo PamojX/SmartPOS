@@ -4,6 +4,7 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import NewBill from "./pages/Newbill/Newbill";
 import InventoryPage from './pages/Inventory/InventoryPage'
 import JobOrders from './pages/JobOrders/JobOrders'
+import Settings from './pages/Settings/Settings'
 import JobOrders from "./pages/JobOrders";
 import Login from "./pages/Login";
 import Signup from "./pages/signup";

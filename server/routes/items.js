@@ -22,9 +22,9 @@ const { db } = require('../db/init');  // import shared db
 
 router.get('/', (req, res) => {
   const sql = `
-    SELECT id, name, price, 'service' AS type FROM services
-    UNION ALL
-    SELECT id, name, price, 'product' AS type FROM products
+    --SELECT id, name, price, NULL as stock, 'service' AS type FROM services
+    --UNION ALL
+    SELECT id, name, price, stock, 'product' AS type FROM products
   `;
 
   db.all(sql, [], (err, rows) => {
@@ -65,6 +65,22 @@ router.delete("/:id", (req, res) => {
     if (err) return res.status(500).json({ error: err.message });
     res.json({ deleted: this.changes });
   });
+});
+
+// Update only stock for a product
+router.patch('/:id', (req, res) => {
+  const { stock } = req.body;
+  if (typeof stock === 'undefined') {
+    return res.status(400).json({ error: 'Stock value is required' });
+  }
+  db.run(
+    'UPDATE products SET stock = ? WHERE id = ?',
+    [stock, req.params.id],
+    function (err) {
+      if (err) return res.status(500).json({ error: err.message });
+      res.json({ updated: this.changes });
+    }
+  );
 });
 
 module.exports = router;
