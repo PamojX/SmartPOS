@@ -1,4 +1,4 @@
-"use client"
+
 import { useState, useEffect } from "react"
 import { Save, Plus, Trash2 } from "lucide-react"
 import "./Newbill.css";
@@ -65,7 +65,13 @@ const NewBill = () => {
       return item
     }))
   }
-
+  const handlePrint = () => {
+    if (window.electron && window.electron.ipcRenderer) {
+      window.electron.ipcRenderer.send("print-bill");
+    } else {
+      console.error("Electron ipcRenderer not available");
+    }
+  };
   const getSubtotal = () => {
     return billItems.reduce((total, item) => total + item.amount, 0)
   }
@@ -247,6 +253,9 @@ const NewBill = () => {
 
         <button onClick={handleSaveBill}  className="save-button" disabled={isLoading}>
           <Save size={16} /> {isLoading ? "Saving..." : "Save Bill"}
+        </button>
+        <button className="print-btn" onClick={handlePrint}>
+          Print Bill
         </button>
       </div>
     </div>
