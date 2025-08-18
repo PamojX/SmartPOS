@@ -12,6 +12,30 @@ function initDB() {
       name TEXT NOT NULL,
       price REAL NOT NULL
     )`);
+  db.run(`CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT UNIQUE NOT NULL,
+    password TEXT NOT NULL,
+    role TEXT NOT NULL,
+    firstName TEXT NOT NULL,
+    lastName TEXT NOT NULL,
+    nic TEXT NOT NULL,
+    phone TEXT NOT NULL,
+    gender TEXT NOT NULL,
+    address TEXT NOT NULL
+);
+`);
+  db.run(`
+CREATE TABLE IF NOT EXISTS pending_users (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  firstName TEXT,
+lastName TEXT,
+  nic TEXT,
+  
+  role TEXT,
+  otp TEXT
+)
+`);
 
     db.run(`CREATE TABLE IF NOT EXISTS products (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -19,6 +43,21 @@ function initDB() {
       price REAL,
       stock INTEGER DEFAULT 0
     )`);
+  db.run(`CREATE TABLE IF NOT EXISTS products (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    price REAL,
+    stock INTEGER DEFAULT 0
+  )`);
+
+  db.run(`CREATE TABLE IF NOT EXISTS job_orders (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  customer TEXT NOT NULL,
+  jobType TEXT NOT NULL,
+  qty INTEGER NOT NULL,
+  dueDate TEXT NOT NULL,
+  status TEXT CHECK(status IN ('Pending','Ready')) DEFAULT 'Pending'
+  )`);
 
     db.run(`CREATE TABLE IF NOT EXISTS transactions (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
