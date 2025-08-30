@@ -2,7 +2,7 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const db = require("../db/init");
+const {db} = require("../db/init");
 const { sendEmail } = require("../utils/mailer");
 
 const router = express.Router();
