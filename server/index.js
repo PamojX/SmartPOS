@@ -83,7 +83,7 @@ app.post("/api/transactions", (req, res) => {
 
 // ✅ Job orders CRUD
 app.get("/api/job-orders", (req, res) => {
-  db.all("SELECT * FROM job_orders_new", [], (err, rows) => {
+  db.all("SELECT * FROM job_orders_new1", [], (err, rows) => {
     if (err) return res.status(500).send(err);
     res.json(rows);
   });
@@ -96,7 +96,7 @@ app.post("/api/job-orders", (req, res) => {
   }
 
   db.run(
-    `INSERT INTO job_orders_new (customer, jobType, qty, dueDate, status)
+    `INSERT INTO job_orders_new1 (customer, jobType, qty, dueDate, status)
      VALUES (?, ?, ?, ?, ?)`,
     [customer, jobType, qty, dueDate, status || "Pending"],
     function (err) {
@@ -110,12 +110,12 @@ app.put("/api/job-orders/:id", (req, res) => {
   const { id } = req.params;
   const { status } = req.body;
 
-  if (!["Pending", "Ready"].includes(status)) {
+  if (!["Pending", "Ready","Canceled"].includes(status)) {
     return res.status(400).json({ error: "Invalid status value" });
   }
 
   db.run(
-    `UPDATE job_orders_new SET status = ? WHERE id = ?`,
+    `UPDATE job_orders_new1 SET status = ? WHERE id = ?`,
     [status, id],
     function (err) {
       if (err) return res.status(500).json({ error: err.message });
@@ -127,7 +127,7 @@ app.put("/api/job-orders/:id", (req, res) => {
 app.delete("/api/job-orders/:id", (req, res) => {
   const { id } = req.params;
 
-  db.run(`DELETE FROM job_orders_new WHERE id = ?`, [id], function (err) {
+  db.run(`DELETE FROM job_orders_new1 WHERE id = ?`, [id], function (err) {
     if (err) return res.status(500).json({ error: err.message });
     if (this.changes === 0)
       return res.status(404).json({ error: "Job order not found" });

@@ -2,8 +2,12 @@ const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 
 const dbPath = path.resolve(__dirname, '../../pos.db');
-const db = new sqlite3.Database(dbPath);
+//const db = new sqlite3.Database(dbPath);
 
+
+
+const db = new sqlite3.Database('pos.db');  // opens file
+module.exports = db;
 function initDB() {
   db.serialize(() => {
     db.run(`
@@ -57,6 +61,16 @@ function initDB() {
         qty INTEGER NOT NULL,
         dueDate TEXT NOT NULL,
         status TEXT CHECK(status IN ('Pending','Ready')) DEFAULT 'Pending'
+      )
+    `);
+     db.run(`
+      CREATE TABLE IF NOT EXISTS job_orders_new1 (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        customer TEXT NOT NULL,
+        jobType TEXT NOT NULL,
+        qty INTEGER NOT NULL,
+        dueDate TEXT NOT NULL,
+        status TEXT CHECK(status IN ('Pending','Ready','Canceled')) DEFAULT 'Pending'
       )
     `);
 
