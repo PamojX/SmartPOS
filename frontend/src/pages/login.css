@@ -1,0 +1,265 @@
+/* Login Form Styles */
+.login-container {
+  background-color: #1f2937;
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  border: 1px solid #374151;
+  max-width: 400px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Added brand header styling */
+.brand-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.brand-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+  letter-spacing: -0.025em;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.field-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #d1d5db;
+  margin-bottom: 0.5rem;
+}
+
+.field-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background-color: #1f2937;
+  border: 1px solid #4b5563;
+  border-radius: 0.5rem;
+  color: white;
+  font-size: 1rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.field-input::placeholder {
+  color: #9ca3af;
+}
+
+.field-input:focus {
+  outline: none;
+  border-color: transparent;
+  box-shadow: 0 0 0 2px #3b82f6;
+}
+
+.password-container {
+  position: relative;
+}
+
+.password-input {
+  padding-right: 3rem;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #9ca3af;
+  cursor: pointer;
+  transition: color 0.2s ease-in-out;
+}
+
+.password-toggle:hover {
+  color: #d1d5db;
+}
+
+.toggle-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.error-message {
+  background-color: rgba(127, 29, 29, 0.5);
+  border: 1px solid #b91c1c;
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+}
+
+.error-text {
+  color: #fca5a5;
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.submit-button {
+  width: 100%;
+  background-color: #2563eb;
+  color: white;
+  font-weight: 500;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  transform: scale(1);
+}
+
+.submit-button:hover:not(:disabled) {
+  background-color: #1d4ed8;
+  transform: scale(1.02);
+}
+
+.submit-button:active {
+  transform: scale(0.98);
+}
+
+.submit-button:disabled {
+  background-color: #1e40af;
+  cursor: not-allowed;
+}
+
+.submit-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #3b82f6;
+}
+
+.loading-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading-spinner {
+  animation: spin 1s linear infinite;
+  margin-left: -0.25rem;
+  margin-right: 0.75rem;
+  height: 1.25rem;
+  width: 1.25rem;
+  color: white;
+}
+
+.spinner-track {
+  opacity: 0.25;
+}
+
+.spinner-fill {
+  opacity: 0.75;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.forgot-password {
+  text-align: center;
+}
+
+.forgot-link {
+  font-size: 0.875rem;
+  color: #60a5fa;
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+}
+
+.forgot-link:hover {
+  color: #93c5fd;
+}
+
+/* Added signup option styling at bottom */
+.signup-option {
+  text-align: center;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #374151;
+}
+
+.signup-text {
+  font-size: 0.875rem;
+  color: #9ca3af;
+  margin: 0;
+}
+
+.signup-link {
+  color: #60a5fa;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease-in-out;
+}
+
+.signup-link:hover {
+  color: #93c5fd;
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+  .login-container {
+    padding: 1.5rem;
+  }
+
+  /* Responsive brand title */
+  .brand-title {
+    font-size: 1.5rem;
+  }
+
+  .field-input {
+    padding: 0.625rem 0.875rem;
+  }
+
+  .submit-button {
+    padding: 0.625rem 0.875rem;
+  }
+}
+/* DEBUG: force inputs to show */
+.form-fields,
+.field-group,
+.password-container {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  height: auto !important;
+}
+
+.field-group { margin-bottom: 16px !important; }
+
+.field-input,
+.password-input,
+input[type="text"],
+input[type="password"] {
+  display: block !important;
+  width: 100% !important;
+  padding: 12px 14px !important;
+  border-radius: 8px !important;
+  border: 1px solid rgba(255,255,255,0.12) !important;
+  background: rgba(255,255,255,0.04) !important;
+  color: #e5e7eb !important;
+  -webkit-text-fill-color: #e5e7eb; /* Chrome/Safari */
+  caret-color: #e5e7eb;
+}
+
+input::placeholder { color: #9ca3af !important; opacity: 1 !important; }
